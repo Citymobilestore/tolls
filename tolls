@@ -1,0 +1,1596 @@
+html_code = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolRent Pro - Professional Equipment Rental</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f59e0b;
+            --primary-dark: #d97706;
+            --secondary: #1e293b;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --glass: rgba(255, 255, 255, 0.1);
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger);
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-weight: 700;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 5rem 5%;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--dark) 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0.15;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.15; }
+            50% { transform: translateX(-50%) scale(1.2); opacity: 0.25; }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: slideUp 0.8s ease;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            animation: slideUp 0.8s ease 0.2s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            animation: slideUp 0.8s ease 0.4s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Search Bar */
+        .search-section {
+            padding: 2rem 5%;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 70px;
+            z-index: 100;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .search-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Categories */
+        .categories {
+            padding: 3rem 5%;
+            background: var(--light);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover, .category-card.active {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Tools Section */
+        .tools {
+            padding: 3rem 5%;
+            background: white;
+        }
+
+        .tools-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background: var(--light);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .tool-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 10;
+        }
+
+        .badge-available { background: var(--accent); color: white; }
+        .badge-popular { background: var(--primary); color: white; }
+        .badge-limited { background: var(--danger); color: white; }
+
+        .tool-image {
+            height: 220px;
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+        }
+
+        .tool-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 20px;
+        }
+
+        .tool-info {
+            padding: 1.5rem;
+        }
+
+        .tool-category {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tool-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+
+        .tool-specs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tool-specs span {
+            background: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--gray);
+            border: 1px solid #e2e8f0;
+        }
+
+        .tool-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .tool-price {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-amount {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .price-period {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .rent-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .rent-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .rent-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 5rem 5%;
+            background: linear-gradient(135deg, var(--secondary), var(--dark));
+            color: white;
+        }
+
+        .how-it-works .section-title {
+            color: white;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .step-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 auto 1rem;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-desc {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        /* Rental Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .date-range {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .rental-summary {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-top: 1.5rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            color: var(--gray);
+        }
+
+        .summary-row.total {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--dark);
+            border-top: 2px solid #e2e8f0;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Cart Sidebar */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            max-width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 2001;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .cart-item {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        .cart-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .cart-item-dates {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item-price {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            background: var(--light);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 5rem 5%;
+            background: var(--light);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .stars {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #1e293b;
+            padding-top: 2rem;
+            text-align: center;
+            color: #64748b;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--dark);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu { display: block; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero-stats { flex-direction: column; gap: 1.5rem; }
+            .search-container { flex-direction: column; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .cart-sidebar { width: 100%; }
+            .date-range { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">🔧 ToolRent Pro</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#tools">Tools</a></li>
+            <li><a href="#how">How It Works</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="icon-btn" onclick="toggleCart()">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+            <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <h1>Rent Professional Tools</h1>
+        <p>Access 500+ professional-grade tools and equipment. Rent by the hour, day, or week. We deliver to your doorstep.</p>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Tools Available</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">24h</div>
+                <div class="stat-label">Fast Delivery</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Cities Covered</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search -->
+    <section class="search-section">
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search tools (e.g., drill, ladder, jackhammer...)" onkeyup="searchTools()">
+            <button class="search-btn" onclick="searchTools()">🔍 Search</button>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories" id="tools">
+        <h2 class="section-title">Tool Categories</h2>
+        <div class="category-grid">
+            <div class="category-card active" onclick="filterCategory('all')">
+                <div class="category-icon">🔧</div>
+                <div class="category-name">All Tools</div>
+            </div>
+            <div class="category-card" onclick="filterCategory('power')">
+                <div class="category-icon">⚡</div>
+                <div class="category-name">Power Tools</div>
+            </div>
+            <div class="category-card" onclick="filterCategory('garden')">
+                <div class="category-icon">🌿</div>
+                <div class="category-name">Garden</div>
+            </div>
+            <div class="category-card" onclick="filterCategory('construction')">
+                <div class="category-icon">🏗️</div>
+                <div class="category-name">Construction</div>
+            </div>
+            <div class="category-card" onclick="filterCategory('cleaning')">
+                <div class="category-icon">🧹</div>
+                <div class="category-name">Cleaning</div>
+            </div>
+            <div class="category-card" onclick="filterCategory('automotive')">
+                <div class="category-icon">🚗</div>
+                <div class="category-name">Automotive</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Grid -->
+    <section class="tools">
+        <div class="tools-header">
+            <h2 class="section-title" style="margin:0;text-align:left;">Available Tools</h2>
+            <span id="resultCount">Showing all tools</span>
+        </div>
+        <div class="tools-grid" id="toolsGrid"></div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Choose Tool</h3>
+                <p class="step-desc">Browse 500+ tools and select what you need for your project.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Pick Dates</h3>
+                <p class="step-desc">Select rental duration - hourly, daily, or weekly rates available.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3 class="step-title">We Deliver</h3>
+                <p class="step-desc">Fast delivery to your location. Same-day available in most areas.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3 class="step-title">Return</h3>
+                <p class="step-desc">Schedule pickup or drop off at any of our 50+ locations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <h2 class="section-title">Customer Reviews</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Rented a jackhammer for my driveway project. Delivered same day and pickup was seamless. Highly recommend!"</p>
+                <div class="testimonial-author">- Rahul Sharma, Contractor</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Best tool rental service in the city. Prices are fair and tools are always in great condition."</p>
+                <div class="testimonial-author">- Priya Patel, DIY Enthusiast</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Used them for a 3-week construction project. Saved thousands compared to buying. Excellent service!"</p>
+                <div class="testimonial-author">- Amit Kumar, Builder</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h3>🔧 ToolRent Pro</h3>
+                <p style="color:#94a3b8;line-height:1.6;">Professional tool and equipment rental service. Quality tools, fair prices, fast delivery.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Browse Tools</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Locations</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Damage Policy</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li>📍 Mumbai, Delhi, Bangalore</li>
+                    <li>📞 1-800-TOOL-RENT</li>
+                    <li>✉️ rent@toolpro.com</li>
+                    <li>🕐 Mon-Sat: 8AM - 8PM</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 ToolRent Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Rental Modal -->
+    <div class="modal-overlay" id="rentalModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalToolName">Rent Tool</h2>
+                <button class="close-modal" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="renterName" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="renterPhone" placeholder="+91 98765 43210">
+                </div>
+                <div class="form-group">
+                    <label>Rental Period</label>
+                    <select id="rentalPeriod" onchange="calculateTotal()">
+                        <option value="hourly">Hourly</option>
+                        <option value="daily" selected>Daily</option>
+                        <option value="weekly">Weekly (7 days)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Duration</label>
+                    <input type="number" id="rentalDuration" value="1" min="1" max="30" onchange="calculateTotal()">
+                </div>
+                <div class="date-range">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" id="startDate" onchange="calculateTotal()">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" id="endDate" readonly>
+                    </div>
+                </div>
+                <div class="rental-summary">
+                    <div class="summary-row">
+                        <span>Tool Rate</span>
+                        <span id="summaryRate">$25/day</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Duration</span>
+                        <span id="summaryDuration">1 day</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery Fee</span>
+                        <span>$15</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Security Deposit</span>
+                        <span id="summaryDeposit">$100</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total Amount</span>
+                        <span id="summaryTotal">$140</span>
+                    </div>
+                </div>
+                <button class="confirm-btn" onclick="confirmRental()">Confirm Rental</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>Your Rentals</h2>
+            <button class="close-modal" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="empty-cart">
+                <div style="font-size:4rem;margin-bottom:1rem;">🛒</div>
+                <p>No rentals yet. Add tools to get started!</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span style="font-size:1.5rem;">✓</span>
+        <span id="toastMessage">Added to cart!</span>
+    </div>
+
+    <script>
+        // Tool Data
+        const tools = [
+            {
+                id: 1,
+                name: "Cordless Drill Driver",
+                category: "power",
+                hourly: 8,
+                daily: 25,
+                weekly: 140,
+                deposit: 100,
+                badge: "popular",
+                specs: ["18V", "2 Batteries", "Carry Case"],
+                image: "🔌",
+                available: true
+            },
+            {
+                id: 2,
+                name: "Jackhammer (Electric)",
+                category: "construction",
+                hourly: 35,
+                daily: 120,
+                weekly: 650,
+                deposit: 500,
+                badge: "popular",
+                specs: ["1500W", "Hex 30mm", "Vibration Control"],
+                image: "🔨",
+                available: true
+            },
+            {
+                id: 3,
+                name: "Pressure Washer",
+                category: "cleaning",
+                hourly: 15,
+                daily: 45,
+                weekly: 250,
+                deposit: 200,
+                badge: "available",
+                specs: ["2000 PSI", "2.3 GPM", "25ft Hose"],
+                image: "💦",
+                available: true
+            },
+            {
+                id: 4,
+                name: "Lawn Mower (Self-Propelled)",
+                category: "garden",
+                hourly: 12,
+                daily: 35,
+                weekly: 180,
+                deposit: 150,
+                badge: "available",
+                specs: ["21\" Deck", "Gas Powered", "Bag Included"],
+                image: "🌿",
+                available: true
+            },
+            {
+                id: 5,
+                name: "Circular Saw",
+                category: "power",
+                hourly: 10,
+                daily: 30,
+                weekly: 160,
+                deposit: 120,
+                badge: "available",
+                specs: ["7-1/4\"", "15 Amp", "Laser Guide"],
+                image: "⚙️",
+                available: true
+            },
+            {
+                id: 6,
+                name: "Concrete Mixer",
+                category: "construction",
+                hourly: 25,
+                daily: 80,
+                weekly: 420,
+                deposit: 300,
+                badge: "limited",
+                specs: ["3.5 cu ft", "Electric", "Towable"],
+                image: "🏗️",
+                available: true
+            },
+            {
+                id: 7,
+                name: "Car Lift (2-Post)",
+                category: "automotive",
+                hourly: 40,
+                daily: 150,
+                weekly: 800,
+                deposit: 1000,
+                badge: "limited",
+                specs: ["9000 lbs", "Hydraulic", "Commercial Grade"],
+                image: "🚗",
+                available: false
+            },
+            {
+                id: 8,
+                name: "Leaf Blower (Backpack)",
+                category: "garden",
+                hourly: 8,
+                daily: 22,
+                weekly: 120,
+                deposit: 80,
+                badge: "available",
+                specs: ["65cc", "230 MPH", "Cruise Control"],
+                image: "🍃",
+                available: true
+            },
+            {
+                id: 9,
+                name: "Floor Sander",
+                category: "construction",
+                hourly: 20,
+                daily: 65,
+                weekly: 350,
+                deposit: 250,
+                badge: "available",
+                specs: ["8\" Drum", "Dust Bag", "Edger Included"],
+                image: "🪵",
+                available: true
+            },
+            {
+                id: 10,
+                name: "Wet/Dry Vacuum",
+                category: "cleaning",
+                hourly: 6,
+                daily: 18,
+                weekly: 95,
+                deposit: 60,
+                badge: "available",
+                specs: ["16 Gallon", "6.5 HP", "Blower Function"],
+                image: "🧹",
+                available: true
+            },
+            {
+                id: 11,
+                name: "Impact Wrench Set",
+                category: "automotive",
+                hourly: 12,
+                daily: 35,
+                weekly: 180,
+                deposit: 150,
+                badge: "popular",
+                specs: ["1/2\" Drive", "Torque: 1000 ft-lb", "Socket Set"],
+                image: "🔧",
+                available: true
+            },
+            {
+                id: 12,
+                name: "Hedge Trimmer",
+                category: "garden",
+                hourly: 7,
+                daily: 20,
+                weekly: 110,
+                deposit: 70,
+                badge: "available",
+                specs: ["24\" Blade", "Electric", "Dual Action"],
+                image: "✂️",
+                available: true
+            }
+        ];
+
+        let cart = [];
+        let currentTool = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTools('all');
+            document.getElementById('startDate').valueAsDate = new Date();
+            calculateTotal();
+        });
+
+        // Render Tools
+        function renderTools(category, searchTerm = '') {
+            const grid = document.getElementById('toolsGrid');
+            let filtered = tools;
+
+            if (category !== 'all') {
+                filtered = filtered.filter(t => t.category === category);
+            }
+
+            if (searchTerm) {
+                filtered = filtered.filter(t => 
+                    t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    t.category.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+
+            document.getElementById('resultCount').textContent = 
+                `Showing ${filtered.length} tool${filtered.length !== 1 ? 's' : ''}`;
+
+            grid.innerHTML = filtered.map(tool => `
+                <div class="tool-card fade-in">
+                    <span class="tool-badge badge-${tool.badge}">${tool.badge.toUpperCase()}</span>
+                    <div class="tool-image">${tool.image}</div>
+                    <div class="tool-info">
+                        <div class="tool-category">${tool.category}</div>
+                        <h3 class="tool-name">${tool.name}</h3>
+                        <div class="tool-specs">
+                            ${tool.specs.map(spec => `<span>${spec}</span>`).join('')}
+                        </div>
+                        <div class="tool-footer">
+                            <div class="tool-price">
+                                <span class="price-amount">$${tool.daily}</span>
+                                <span class="price-period">per day</span>
+                            </div>
+                            <button class="rent-btn" ${!tool.available ? 'disabled' : ''} 
+                                    onclick="${tool.available ? `openRentalModal(${tool.id})` : ''}">
+                                ${tool.available ? 'Rent Now' : 'Unavailable'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter Category
+        function filterCategory(category) {
+            document.querySelectorAll('.category-card').forEach(card => card.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            renderTools(category, document.getElementById('searchInput').value);
+        }
+
+        // Search Tools
+        function searchTools() {
+            const term = document.getElementById('searchInput').value;
+            const activeCategory = document.querySelector('.category-card.active');
+            const category = activeCategory ? 'all' : 'all'; // Simplified for demo
+            renderTools('all', term);
+        }
+
+        // Open Rental Modal
+        function openRentalModal(toolId) {
+            currentTool = tools.find(t => t.id === toolId);
+            document.getElementById('modalToolName').textContent = `Rent: ${currentTool.name}`;
+            document.getElementById('rentalModal').classList.add('active');
+            calculateTotal();
+        }
+
+        // Close Modal
+        function closeModal() {
+            document.getElementById('rentalModal').classList.remove('active');
+            currentTool = null;
+        }
+
+        // Calculate Total
+        function calculateTotal() {
+            if (!currentTool) return;
+
+            const period = document.getElementById('rentalPeriod').value;
+            const duration = parseInt(document.getElementById('rentalDuration').value) || 1;
+            const startDate = new Date(document.getElementById('startDate').value);
+            
+            let rate, periodLabel;
+            switch(period) {
+                case 'hourly': rate = currentTool.hourly; periodLabel = 'hour'; break;
+                case 'daily': rate = currentTool.daily; periodLabel = 'day'; break;
+                case 'weekly': rate = currentTool.weekly; periodLabel = 'week'; break;
+            }
+
+            const rentalCost = rate * duration;
+            const deliveryFee = 15;
+            const deposit = currentTool.deposit;
+            const total = rentalCost + deliveryFee + deposit;
+
+            // Update end date
+            const endDate = new Date(startDate);
+            if (period === 'hourly') endDate.setHours(endDate.getHours() + duration);
+            else if (period === 'daily') endDate.setDate(endDate.getDate() + duration);
+            else if (period === 'weekly') endDate.setDate(endDate.getDate() + (duration * 7));
+            
+            document.getElementById('endDate').valueAsDate = endDate;
+
+            // Update summary
+            document.getElementById('summaryRate').textContent = `$${rate}/${periodLabel}`;
+            document.getElementById('summaryDuration').textContent = `${duration} ${periodLabel}${duration > 1 ? 's' : ''}`;
+            document.getElementById('summaryDeposit').textContent = `$${deposit}`;
+            document.getElementById('summaryTotal').textContent = `$${total}`;
+        }
+
+        // Confirm Rental
+        function confirmRental() {
+            const name = document.getElementById('renterName').value;
+            const phone = document.getElementById('renterPhone').value;
+            
+            if (!name || !phone) {
+                showToast('Please fill in all fields!');
+                return;
+            }
+
+            const period = document.getElementById('rentalPeriod').value;
+            const duration = parseInt(document.getElementById('rentalDuration').value);
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            let rate;
+            switch(period) {
+                case 'hourly': rate = currentTool.hourly; break;
+                case 'daily': rate = currentTool.daily; break;
+                case 'weekly': rate = currentTool.weekly; break;
+            }
+
+            const total = (rate * duration) + 15 + currentTool.deposit;
+
+            cart.push({
+                ...currentTool,
+                rentalPeriod: period,
+                duration: duration,
+                startDate: startDate,
+                endDate: endDate,
+                total: total,
+                renterName: name,
+                renterPhone: phone
+            });
+
+            updateCartUI();
+            closeModal();
+            showToast(`${currentTool.name} added to rentals!`);
+
+            // Reset form
+            document.getElementById('renterName').value = '';
+            document.getElementById('renterPhone').value = '';
+            document.getElementById('rentalDuration').value = '1';
+        }
+
+        // Update Cart UI
+        function updateCartUI() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+
+            cartCount.textContent = cart.length;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <div style="font-size:4rem;margin-bottom:1rem;">🛒</div>
+                        <p>No rentals yet. Add tools to get started!</p>
+                    </div>
+                `;
+                cartTotal.textContent = '$0';
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.total, 0);
+
+            cartItems.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div class="cart-item-header">
+                        <span class="cart-item-name">${item.name}</span>
+                        <button class="remove-btn" onclick="removeFromCart(${index})">🗑️</button>
+                    </div>
+                    <div class="cart-item-dates">
+                        📅 ${item.startDate} → ${item.endDate} | ${item.duration} ${item.rentalPeriod}
+                    </div>
+                    <div class="cart-item-footer">
+                        <span style="font-size:0.85rem;color:var(--gray);">${item.renterName}</span>
+                        <span class="cart-item-price">$${item.total}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            cartTotal.textContent = `$${total}`;
+        }
+
+        // Remove from Cart
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+            showToast('Rental removed');
+        }
+
+        // Toggle Cart
+        function toggleCart() {
+            document.getElementById('cartOverlay').classList.toggle('active');
+            document.getElementById('cartSidebar').classList.toggle('active');
+        }
+
+        // Checkout
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty!');
+                return;
+            }
+            const total = cart.reduce((sum, item) => sum + item.total, 0);
+            alert(`Thank you for your booking!\\n\\nTotal Rentals: ${cart.length}\\nTotal Amount: $${total}\\n\\nOur team will contact you shortly for delivery confirmation.`);
+            cart = [];
+            updateCartUI();
+            toggleCart();
+            showToast('Booking confirmed! 🎉');
+        }
+
+        // Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.cssText = 'position:absolute;top:100%;left:0;right:0;flex-direction:column;background:white;padding:1rem;box-shadow:0 10px 20px rgba(0,0,0,0.1);z-index:999;';
+            }
+        }
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Close modal on overlay click
+        document.getElementById('rentalModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>'''
+
+with open('/mnt/agents/output/index.html', 'w', encoding='utf-8') as f:
+    f.write(html_code)
+
+print("=" * 60)
+print("✅ TOOL RENTAL WEBSITE READY!")
+print("=" * 60)
+print(f"📁 File: index.html")
+print(f"📊 Size: {len(html_code):,} characters")
+print(f"🔧 Tools: 12 professional tools")
+print(f"📂 Categories: 6 (Power, Garden, Construction, Cleaning, Automotive)")
+print("=" * 60)
