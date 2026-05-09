@@ -1,0 +1,4 @@
+hourly: 15,   // Per hour rate
+daily: 45,    // Per day rate  
+weekly: 250,  // Per week rate
+deposit: 200  // Security deposit
