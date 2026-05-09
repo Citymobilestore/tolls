@@ -1,0 +1,13 @@
+{
+    id: 13,
+    name: "drille",
+    category: "power",  // power/garden/construction/cleaning/automotive
+    hourly: 10,
+    daily: 30,
+    weekly: 160,
+    deposit: 100,
+    badge: "available", // available/popular/limited
+    specs: ["Spec 1", "Spec 2", "Spec 3"],
+    image: "🔧",  // Emoji ya image URL
+    available: true
+}
